@@ -2,190 +2,222 @@
 
     #include <iostream>
     using namespace std;
+    void numInput(unsigned int& n) {
+        n = -1;
+        do {
+            cin >> n;
+        } while (n <= 0);
+    }
     int main(int, char**){
         setlocale(LC_ALL, "ru");
-        int n, c=0, maxi=0;
+        int numOfElements, sum = 0, maxi = 0;
+        int* numsArray;
+
         cout << "Введите n: ";
-        cin >> n;
-        int* m = new int[n];
+        cin >> numOfElements;
+
+        numsArray = new int[numOfElements];
         cout << "Элементы массива: " << endl;
-        for (int i=0; i<n; i++) {
-            m[i] = i*i;
-            cout << m[i] << endl;
-            c+= m[i];
+        for (int i=0; i< numOfElements; i++) {
+            numsArray[i] = i*i;
+            cout << numsArray[i] << endl;
+            sum+= numsArray[i];
         }
         cout << "Сумма элементов: ";
-        cout << c << endl;
+        cout << sum << endl;
         cout << "Среднее арифметическое: ";
-        cout << static_cast<float>(c) / n << endl;
+        cout << (float)(sum) / numOfElements << endl;
         cout << "Максимальный элемент массива: ";
-        for (int i = 0; i < n; i++) {
-            if (m[i] > maxi) {
-                maxi = m[i];
+        for (int i = 0; i < numOfElements; i++) {
+            if (numsArray[i] > maxi) {
+                maxi = numsArray[i];
             }
         }
         cout << maxi << endl;
-        delete[] m;
+        delete[] numsArray;
      }
 
-    // 2
 
-     #include <iostream>
-     using namespace std;
-     int main(int, char**){
-         setlocale(LC_ALL, "ru");
-         int n, m, c, maxi=0;
-         cout << "Введите количество строк: ";
-         cin >> m;
-         cout << "Введите количество столбцов: ";
-         cin >> n;
-         int *cm = new int[n];
-         int** k = new int*[m];
-         cout << "Элементы массива: " << endl;
-         for (int i=0; i<m; i++) {
-             k[i] = new int[n];
-             cm[i] = 0;
-             for (int j=0; j<n; j++) {
-                 k[i][j] = i * n + j + 1;
-                 cout << k[i][j] << " ";
-                 cm[i] += k[i][j];
-             }
-             cout << endl;
-         }
+// // // // // // // // // // // // // //
+// // // // // // // // // // // // // //
+
+//2
+#include <iostream>
+using namespace std;
+void numInput(unsigned int &n) {
+    n = -1;
+    do {
+        cin >> n;
+    } while (n <= 0);
+}
+
+int main(int, char**){
+    setlocale(LC_ALL, "ru");
+    unsigned int n, m, sum, maxi=0;
+    int* sumOfRow;
+    int** matrix;
+    int** matrixT;
+    cout << "Введите количество строк: ";
+    numInput(m);
+    cout << "Введите количество столбцов: ";
+    numInput(n);
+
+    sumOfRow = new int[n];
+    matrix = new int*[m];
+
+    cout << "Элементы массива: " << endl;
+    for (int i=0; i<m; i++) {
+        matrix[i] = new int[n];
+        sumOfRow[i] = 0;
+        for (int j=0; j<n; j++) {
+            matrix[i][j] = i * n + j + 1;
+            cout << matrix[i][j] << " ";
+            sumOfRow[i] += matrix[i][j];
+        }
+        cout << endl;
+    }
 
 
-         cout << "Сумма элементов строк: " << endl;
-         for (int i=0; i<m; i++) {
-             cout << cm[i] << " " << endl;
-         }
-         cout << endl;
-         cout << "Сумма элементов столбцов: " << endl;
-         for (int i=0; i<n; i++) {
-             c = 0;
-             for (int j=0; j<m; j++) {
-                 c+=k[j][i];
-             }
-             cout << c << endl;
-         }
-         cout << endl;
+    cout << "Сумма элементов строк: " << endl;
+    for (int i=0; i<m; i++) {
+        cout << sumOfRow[i] << " " << endl;
+    }
+    cout << endl;
 
-         cout << "Максимальный элемент массива: ";
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (k[i][j] > maxi) {
-                    maxi = k[i][j];
-                }
+    cout << "Сумма элементов столбцов: " << endl;
+    for (int i=0; i<n; i++) {
+        sum = 0;
+        for (int j=0; j<m; j++) {
+            sum+=matrix[j][i];
+        }
+        cout << sum << endl;
+    }
+    cout << endl;
+
+    cout << "Максимальный элемент массива: ";
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (matrix[i][j] > maxi) {
+                maxi = matrix[i][j];
             }
         }
-         cout << k[m-1][n-1] << endl;
+    }
+    cout << maxi << endl;
 
-         int** kt = new int*[n];
-         cout << "Транспонированная матрица:" << endl;
-         for (int i=0; i<n; i++) {
-             kt[i] = new int[m];
-             for (int j=0; j<m; j++) {
-                 kt[i][j] = k[j][i];
-                 cout << kt[i][j] << " ";
-             }
-             cout << endl;
-         }
+    matrixT = new int*[n];
+    cout << "Транспонированная матрица:" << endl;
+    for (int i=0; i<n; i++) {
+        matrixT[i] = new int[m];
+        for (int j=0; j<m; j++) {
+            matrixT[i][j] = matrix[j][i];
+            cout << matrixT[i][j] << " ";
+        }
+        cout << endl;
+    }
 
 
-         for (int i=0; i<m; i++) {
-             delete[] k[i];
-         }
-         delete[] k;
+    for (int i=0; i<m; i++) {
+        delete[] matrix[i];
+    }
+    delete[] matrix;
 
-         for (int i=0; i<n; i++) {
-             delete[] kt[i];
-         }
-         delete[] kt;
-     }
+    for (int i=0; i<n; i++) {
+        delete[] matrixT[i];
+    }
+    delete[] matrixT;
+}
 
-    //3
 
-    #include <iostream>
-    #include <cstdlib>
-    using namespace std;
-    class player {
-    public:
-        int shadowField[10][10];
-        int field[10][10];
-        int shipCount;
-        void setGame() {
-            cout << "Расставьте корабли: 0 - пусто, 1 - корабль" << endl;
-            for (int i = 0; i < 10; i++) {
-                for (int j = 0; j < 10; j++) {
-                    shadowField[i][j] = 2;
-                    cin >> field[i][j];
-                    shipCount += field[i][j];
-                }
+
+// // // // // // // // // // // // // //
+// // // // // // // // // // // // // //
+
+
+//3
+
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+class player {
+public:
+    int shadowField[10][10];
+    int field[10][10];
+    int shipCount=0;
+    void setGame() {
+        cout << "Расставьте корабли: 0 - пусто, 1 - корабль" << endl;
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                shadowField[i][j] = 2;
+                cin >> field[i][j];
+                shipCount += field[i][j];
             }
         }
-        void showField() {
-            for (int i = 0; i < 10; i++) {
-                for (int j = 0; j < 10; j++) {
-                    if (shadowField[i][j] == 2) {
-                        cout << "_\t";
-                    }
-                    else {
-                        cout << shadowField[i][j] << "\t";
-                    }
+    }
+    void showField() {
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (shadowField[i][j] == 2) {
+                    cout << "_\t";
                 }
-                cout << endl;
+                else {
+                    cout << shadowField[i][j] << "\t";
+                }
             }
+            cout << endl;
         }
-        void fire(player &enemy) {
-            int x, y;
-            enemy.showField();
-            cout << "Введите клетку выстрела: ";
+    }
+    void fire(player &enemy) {
+        int x, y;
+        enemy.showField();
+        cout << "Введите клетку выстрела: ";
+        cin >> x >> y;
+        while (enemy.shadowField[y - 1][x - 1] != 2) {
+            cout << "Вы уже стреляли сюда. Введите другое: " << endl;
             cin >> x >> y;
-            while (enemy.shadowField[y - 1][x - 1] != 2) {
-                cout << "Вы уже стреляли сюда. Введите другое: " << endl;
-                cin >> x >> y;
-            }
-            int cell = enemy.field[y - 1][x - 1];
-            if (cell == 1) {
-                cout << "ПОПАДАНИЕ!" << endl;
-                enemy.shipCount--;
-                cout << "Осталось " << enemy.shipCount << " попаданий" << endl;
-            }
-            else {
-                cout << "ПРОМАХ!" << endl;
-            }
-            enemy.shadowField[y - 1][x - 1] = cell;
-            enemy.showField();
-
         }
-    };
+        int cell = enemy.field[y - 1][x - 1];
+        if (cell == 1) {
+            cout << "ПОПАДАНИЕ!" << endl;
+            enemy.shipCount--;
+            cout << "Осталось " << enemy.shipCount << " попаданий" << endl;
+        }
+        else {
+            cout << "ПРОМАХ!" << endl;
+        }
+        enemy.shadowField[y - 1][x - 1] = cell;
+        enemy.showField();
 
+    }
+};
+
+void clearMap() {
+    int inp;
+    cout << "Передать ход? Введите 1: ";
+    do {
+        cin >> inp;
+    } while (inp != 1);
+    system("cls");
+}
+
+int main(int, char**) {
+    setlocale(LC_ALL, "ru");
     player pl[2];
-    bool turn=0;
-    void clearMap() {
-        int b;
-        cout << "Передать ход? Введите 1: ";
-        do {
-            cin >> b;
-        } while (b != 1);
-        system("cls");
-    }
+    uint8_t turn = 0;
 
-    int main(int, char**) {
-        setlocale(LC_ALL, "ru");
-        pl[0].setGame();
-        clearMap();
-        pl[1].setGame();
-        clearMap();
-        while (true) {
-            cout << "ХОД ИГРОКА " << (int)turn+1 << endl;
-            pl[turn].fire(pl[!turn]);
-            if (pl[!turn].shipCount == 0) {
-                cout << "Игрок N" << ((int)turn) + 1 << " выиграл!";
-                break;
-            }
-            clearMap();
-            turn = !turn;
-
-        
+    pl[0].setGame();
+    clearMap();
+    pl[1].setGame();
+    clearMap();
+    while (true) {
+        cout << "ХОД ИГРОКА " << (int)turn+1 << endl;
+        pl[turn].fire(pl[!turn]);
+        if (pl[!turn].shipCount == 0) {
+            cout << "Игрок N" << ((int)turn) + 1 << " выиграл!";
+            break;
         }
+        clearMap();
+        turn = !turn;
+
+    
     }
+}
