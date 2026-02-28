@@ -212,11 +212,11 @@ int main(int, char**) {
         cout << "ХОД ИГРОКА " << (int)turn+1 << endl;
         pl[turn].fire(pl[!turn]);
         if (pl[!turn].shipCount == 0) {
-            cout << "Игрок N" << ((int)turn) + 1 << " выиграл!";
+            cout << "Игрок N" << turn + 1 << " выиграл!";
             break;
         }
         clearMap();
-        turn = !turn;
+        turn = (turn == 1) ? 0:1;
 
     
     }
