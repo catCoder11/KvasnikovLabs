@@ -1,0 +1,87 @@
+#include <iostream>
+using namespace std;
+
+enum Day {
+    Monday = 1,
+    Tuesday = 2,
+    Wednesday = 3,
+    Thursday = 4,
+    Friday = 5,
+    Saturday = 6,
+    Sunday = 7
+};
+
+struct Weather {
+    Day day;
+    int temperature;
+    bool downfall;
+};
+
+void print(Weather weather) {
+    string day;
+    switch (weather.day) {
+    case 1: {
+        day = "Monday";
+        break;
+    }
+    case 2: {
+        day = "Tuesday";
+        break;
+    }
+    case 3: {
+        day = "Wednesday";
+        break;
+    }
+    case 4: {
+        day = "Thursday";
+        break;
+    }
+    case 5: {
+        day = "Friday";
+        break;
+    }
+    case 6: {
+        day = "Saturday";
+        break;
+    }
+    case 7: {
+        day = "Sunday";
+        break;
+    }
+    }
+    switch (weather.downfall) {
+    case true: {
+        cout << "This day is " << day << ", " << weather.temperature << " Celcia with downfall" << endl;
+        break;
+    }
+    case false: {
+        cout << "This day is " << day << ", " << weather.temperature << " Celcia with no downfall" << endl;
+        break;
+    }
+    }
+    
+}
+void getHotDay(Weather* data, int n) {
+    Weather hottest = data[0];
+    for (int i = 1; i < n; i++) {
+        if (data[i].temperature > hottest.temperature) {
+            hottest = data[i];
+        }
+    }
+    print(hottest);
+
+}
+
+int main(int, char**) {
+    setlocale(LC_ALL, "ru");
+    Weather data[7] = {
+        {Monday, 26, false},
+        {Tuesday, 665, false},
+        {Wednesday, -27, false},
+        {Thursday, -15, false},
+        {Friday, -20, false},
+        {Saturday, 0, false},
+        {Sunday, 13, false}
+    };
+    getHotDay(data, 7);
+}
