@@ -76,10 +76,10 @@ int main(int, char**) {
     setlocale(LC_ALL, "ru");
     Weather data[7] = {
         {Monday, 26, false},
-        {Tuesday, 665, false},
+        {Tuesday, 665, true},
         {Wednesday, -27, false},
         {Thursday, -15, false},
-        {Friday, -20, false},
+        {Friday, -20, true},
         {Saturday, 0, false},
         {Sunday, 13, false}
     };
