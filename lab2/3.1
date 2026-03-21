@@ -12,7 +12,7 @@ void printWeather(string* day, int* temp, bool* downFall, int id) {
         break;
     }
     }
-    
+
 }
 void getHotDay(string* day, int* temp, bool* downFall, int n) {
     int id = 0;
@@ -27,27 +27,11 @@ void getHotDay(string* day, int* temp, bool* downFall, int n) {
 
 int main(int, char**) {
     setlocale(LC_ALL, "ru");
-    string day[7] = {
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday"
-    };
-    int temp[7] = {
-        26,
-        665,
-        -27,
-        -15,
-        -20,
-        0,
-        13
-    };
-    bool downFall[7] = {
-        false, true, false, false, true, false, false
-    };
+    const int COUNT = 7;
+    string day[COUNT] = { "Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday" };
+    int temp[COUNT] = { 26,665,-27,-15,-20,0,13 };
+    bool osadki[COUNT] = { false, true, false, false, true, false, false };
 
-    getHotDay(day, temp, downFall, 7);
+    cout << "Самый горячий день:" << endl;
+    getHotDay(day, temp, osadki, 7);
 }
