@@ -23,14 +23,14 @@ struct ploskyPerson {
 };
 
 
-void intInp(int &x) {
+void intInp(int& x) {
     x = -1;
     while (x < 0) {
         cin >> x;
     }
 }
-void inpPerson() {
-    Person person;
+
+void inpPerson(Person& person) {
     Address address;
     cout << "Заполните данные:" << endl
         << "ФИО: "; cin >> person.FIO;
@@ -38,30 +38,32 @@ void inpPerson() {
     cout << "улица: "; cin >> address.street;
     cout << "дом: "; intInp(address.house);
     cout << "квартира: "; intInp(address.apartment);
+    person.address = address;
 }
 
 void printPerson(Person person) {
     cout << "Субъект " << person.FIO << endl
-         << "Возраст: " << person.age << " лет" << endl
-         << "Адрес: " << person.address.street 
-         << " " << person.address.house << ", кв." << person.address.apartment << endl;
+        << "Возраст: " << person.age << " лет" << endl
+        << "Адрес: " << person.address.street
+        << " " << person.address.house << ", кв." << person.address.apartment << endl;
 }
 
-void printPeople(Person *people, int n) {
+void printPeople(Person* people, int n) {
     for (int i = 0; i < n; i++) {
         printPerson(people[i]);
         cout << endl;
     }
 }
 
-Person findPerson(Person *people, string street, int n) {
+Person findPerson(Person* people, string street, int n) {
     for (int i = 0; i < n; i++) {
         if (people[i].address.street == street) {
             return people[i];
         }
     }
-    return Person{ "None", -1, {"None", -1, -1}};
+    return Person{ "None", -1, {"None", -1, -1} };
 }
+
 int main(int, char**) {
     setlocale(LC_ALL, "ru");
     SetConsoleCP(1251);
@@ -70,14 +72,14 @@ int main(int, char**) {
 
     Person* dudes = new Person[COUNT]{
         {"Богдан", 7, {"Вершинина", 39, 130}},
-        {"Данил", 15, {"Никитина", 8, 111}},
-        {"Дима", 100, {"Косарева", 35, 204}}};
+        {"Данил", 15, {"Никитина", 8, 111}} };
 
     ploskyPerson* plDudes = new ploskyPerson[COUNT]{
         {"Богдан", 7, "Вершинина", 39, 130},
         {"Данил", 15, "Никитина", 8, 111},
-        {"Дима", 100, "Косарева", 35, 204}};
+        {"Дима", 100, "Косарева", 35, 204} };
 
+    inpPerson(dudes[2]);
     printPeople(dudes, COUNT);
     cout << endl << "Введите улицу: ";
     string street;
