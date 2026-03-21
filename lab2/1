@@ -1,0 +1,38 @@
+#include <iostream>
+#include <windows.h>
+using namespace std;
+
+enum Status { Excellent = 5, Good = 4, Satisfactory = 3, Unsatisfactory = 2 };
+
+struct Student {
+	int id;
+	string name;
+	Status status;
+};
+
+int main(int, char**) {
+	setlocale(LC_ALL, "ru");
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+	Student student;
+	int numStatus;
+	cout << "Введите номер зачётки: ";
+	cin >> student.id;
+	cout << "Введите имя студента: ";
+	cin >> student.name;
+	cout << "Введите оценку 2-Unsatisfactory 3-Satisfactory 4-Good 5-Excellent: ";
+	cin >> numStatus;
+	switch (numStatus) {
+	case 5: {student.status = Excellent; break; }
+	case 4: {student.status = Good; break; }
+	case 3: {student.status = Satisfactory; break; }
+	case 2: {student.status = Unsatisfactory; break; }
+	}
+
+	cout << "\nСтудент " << student.name << " | номер зачётки " << student.id
+		<< " | оценка " << student.status << endl;
+
+	cout << "Размер структуры: " << sizeof(student) << endl;
+	int array[4] = { 1, 2, 3, 4 };
+	cout << "Размер массива : " << sizeof(array);
+}
