@@ -1,0 +1,55 @@
+#include <iostream>
+#include <windows.h>
+using namespace std;
+
+struct Book {
+	string name;
+	string author;
+	int year;
+};
+
+void printBook(Book book) {
+	cout << book.author << ": '" << book.name << "'(" << book.year << ")" << endl;
+}
+
+void printBooks(Book* books, int n) {
+	for (int i = 0; i < n; i++) {
+		printBook(books[i]);
+	}
+}
+
+int findBook(Book* books, int n, string author, int appearanceIndex = 1) {
+	if (appearanceIndex < 1) {
+		return -1;
+	}
+	for (int i = 0; i < n; i++) {
+		if (books[i].author == author) {
+			appearanceIndex--;
+		}
+
+		if (appearanceIndex == 0) {
+			return i;
+		}
+	}
+	return -1;
+}
+int main(int, char**) {
+	setlocale(LC_ALL, "ru");
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+
+	int COUNT = 5;
+	Book* books = new Book[5]{
+		{"Мёртвые души", "Гоголь", 1835},
+		{"Собачье сердце", "Булгаков", 1925},
+		{"Мастер и Маргарита", "Булгаков", 1940},
+		{"Капитанская дочка", "Пушкин", 1836},
+		{"Роковые яйца", "Булгаков", 1924}
+	};
+	cout << "Книги:" << endl;
+	printBooks(books, COUNT);
+	cout << "Книга Булгакова:" << endl;
+	printBook(books[findBook(books, COUNT, "Булгаков", 1)]);
+
+	delete[] books;
+}
