@@ -1,0 +1,60 @@
+#include <iostream>
+#include <windows.h>
+using namespace std;
+const int COUNT = 5;
+
+struct Book {
+	string name;
+	string author;
+};
+
+struct Library {
+	int years[COUNT];
+
+};
+
+
+void printBooks(Book* books, Library library, int n) {
+	for (int i = 0; i < n; i++) {
+		cout << books[i].author << ": '" << books[i].name << "'(" << library.years[i] << ")" << endl;
+	}
+}
+
+int findBook(Book* books, int n, string author, int appearanceIndex = 1) {
+	if (appearanceIndex < 1) {
+		return -1;
+	}
+
+	for (int i = 0; i < n; i++) {
+		if (books[i].author == author) {
+			appearanceIndex--;
+		}
+
+		if (appearanceIndex == 0) {
+			return i;
+		}
+	}
+	return -1;
+}
+int main(int, char**) {
+	setlocale(LC_ALL, "ru");
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+
+	Book* books = new Book[5]{
+		{"Мёртвые души", "Гоголь"},
+		{"Собачье сердце", "Булгаков"},
+		{"Мастер и Маргарита", "Булгаков"},
+		{"Капитанская дочка", "Пушкин"},
+		{"Роковые яйца", "Булгаков"}
+	};
+	Library library = { {1835, 1925, 1940, 1836, 1924} };
+
+	cout << "Книги:" << endl;
+	printBooks(books, library, COUNT);
+	cout << "Книга Булгакова:" << endl;
+	int ind = findBook(books, COUNT, "Булгаков", 1);
+	cout << books[ind].author << ": '" << books[ind].name << "'(" << library.years[ind] << ")" << endl;
+
+	delete[] books;
+}
