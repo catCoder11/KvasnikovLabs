@@ -14,10 +14,10 @@ enum Day {
 struct Weather {
     Day day;
     int temperature;
-    bool downfall;
+    bool osadki;
 };
 
-void print(Weather weather) {
+void printWeather(Weather weather) {
     string day;
     switch (weather.day) {
     case 1: {
@@ -49,7 +49,7 @@ void print(Weather weather) {
         break;
     }
     }
-    switch (weather.downfall) {
+    switch (weather.osadki) {
     case true: {
         cout << "This day is " << day << ", " << weather.temperature << " Celcia with downfall" << endl;
         break;
@@ -59,7 +59,7 @@ void print(Weather weather) {
         break;
     }
     }
-    
+
 }
 void getHotDay(Weather* data, int n) {
     Weather hottest = data[0];
@@ -68,13 +68,14 @@ void getHotDay(Weather* data, int n) {
             hottest = data[i];
         }
     }
-    print(hottest);
+    printWeather(hottest);
 
 }
 
 int main(int, char**) {
     setlocale(LC_ALL, "ru");
-    Weather data[7] = {
+    const int COUNT = 7;
+    Weather data[COUNT] = {
         {Monday, 26, false},
         {Tuesday, 665, true},
         {Wednesday, -27, false},
@@ -83,5 +84,6 @@ int main(int, char**) {
         {Saturday, 0, false},
         {Sunday, 13, false}
     };
-    getHotDay(data, 7);
+    cout << "Самый горячий день:" << endl;
+    getHotDay(data, COUNT);
 }
