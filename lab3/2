@@ -1,0 +1,63 @@
+#include <iostream>
+#include <vector>
+#include <list>
+#include <array>
+#include <iterator>
+#include <random>
+using namespace std;
+
+int main() {
+	array<int, 1000> arr;
+	vector<int> vec(1000);
+	list<int> listik(1000);
+
+	random_device rd;
+	mt19937 engine(rd());
+	uniform_int_distribution<int> dist(1, 1000);
+
+	generate(arr.begin(), arr.end(), [&]() {
+		return dist(engine);
+		});
+	generate(vec.begin(), vec.end(), [&]() {
+		return dist(engine);
+		});
+	generate(listik.begin(), listik.end(), [&]() {
+		return dist(engine);
+		});
+
+
+	//array скипнул
+
+	vec.insert(vec.begin()+50, 999);
+	vec.erase(vec.begin()+25);
+	for (int i = 0; i < vec.size(); i++) {
+		while (i < vec.size() && vec[i] > 500) {
+			vec.erase(vec.begin() + i);
+		}
+	}
+	cout << vec.size() << endl;
+
+	auto it = listik.begin();
+	advance(it, 50);
+	listik.insert(it, 999);
+	advance(it, -25);
+	listik.erase(it);
+	for (int i = 501; i < 1001; i++) {
+		listik.remove(i);
+	}
+	cout << listik.size() << endl;
+
+
+
+	for (int i = 0; i < vec.size(); i++) {
+		cout << vec[i] << "  ";
+	}
+	cout << endl;
+
+	auto cur_el = listik.begin();
+	for (int i = 0; i < listik.size(); i++) {
+		cout << *cur_el++ << "  ";
+	}
+	cout << endl;
+
+}
