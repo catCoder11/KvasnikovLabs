@@ -1,0 +1,42 @@
+#include <iostream>
+#include <vector>
+#include <list>
+#include <array>
+#include <iterator>
+using namespace std;
+
+int main() {
+	array<int, 10> arr = { 1,2,3,4,5,6,7,8,9,10 };
+	vector<int> vec = { 1,2,3,4,5,6,7,8,9,10 };
+	list<int> listik = { 1,2,3,4,5,6,7,8,9,10 };
+	
+	arr[5] = 100;
+	vec[5] = 100;
+	auto it = listik.begin();
+	advance(it, 5);
+	*it = 100;
+
+	//array статичен
+	vec.push_back(11);
+	listik.push_back(11);
+
+
+	for (int i = 0; i < arr.size(); i++) {
+		cout << arr[i] << "  ";
+	}
+	cout << "      |  " << arr.size() << "  " << arr[0] << "  " << arr[arr.size()-1];
+	cout << endl;
+
+	for (int i = 0; i < vec.size(); i++) {
+		cout << vec[i] << "  ";
+	}
+	cout << "  |  " << vec.size() << "  " << vec[0] << "  " << vec[vec.size() - 1];
+	cout << endl;
+
+	auto cur_el = listik.begin();
+	for (int i = 0; i < listik.size(); i++) {
+		cout << *cur_el++ << "  ";
+	}
+	cout << "  |  " << listik.size() << "  " << *listik.begin() << "  " << *(--listik.end());
+	cout << endl;
+}
