@@ -10,11 +10,10 @@ struct Book {
 
 struct Library {
 	int years[COUNT];
-
 };
 
 
-void printBooks(Book* books, Library library, int n) {
+void printBooks(Book* books, Library &library, int n) {
 	for (int i = 0; i < n; i++) {
 		cout << books[i].author << ": '" << books[i].name << "'(" << library.years[i] << ")" << endl;
 	}
