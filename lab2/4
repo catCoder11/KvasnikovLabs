@@ -41,7 +41,7 @@ void inpPerson(Person& person) {
     person.address = address;
 }
 
-void printPerson(Person person) {
+void printPerson(Person& person) {
     cout << "Субъект " << person.FIO << endl
         << "Возраст: " << person.age << " лет" << endl
         << "Адрес: " << person.address.street
@@ -55,13 +55,13 @@ void printPeople(Person* people, int n) {
     }
 }
 
-Person findPerson(Person* people, string street, int n) {
+int findPerson(Person* people, string& street, int n) {
     for (int i = 0; i < n; i++) {
         if (people[i].address.street == street) {
-            return people[i];
+            return i;
         }
     }
-    return Person{ "None", -1, {"None", -1, -1} };
+    return -1;
 }
 
 int main(int, char**) {
@@ -79,8 +79,13 @@ int main(int, char**) {
     cout << endl << "Введите улицу: ";
     string street;
     cin >> street;
-    printPerson(findPerson(dudes, street, COUNT));
-
+    int ind = findPerson(dudes, street, COUNT);
+    if (ind != -1) {
+        printPerson(dudes[ind]);
+    }
+    else {
+        cout << "Такого человека нет(" << endl;
+    }
 
     cout << "Сравнение struct и двумерного массива: " << endl;
     cout << sizeof(Person) << endl;
