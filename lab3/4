@@ -1,0 +1,116 @@
+#include <iostream>
+#include <string>
+#include <array>
+#include <vector>
+#include <list>
+#include <random>
+#include <algorithm>
+#include <iterator>
+using namespace std;
+
+bool isVowel(char c) {
+	c = std::tolower(c);
+	return (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u');
+}
+
+int main() {
+	setlocale(LC_ALL, "Russian");
+	
+
+	array<string, 1000> arr = { "fluctuation", "total", "different", "suntan", "industry", "exercise", "beer", "sum", "substitute", "triangle", "sick", "gem", "tragedy", "suit", "gallery", "owner", "cherry", "wound", "friendly", "galaxy", "execute", "so", "leader", "hole", "shift", "haunt", "apathy", "technology", "last", "consensus", "company", "board", "pony", "tumble", "dawn", "record", "recommendation", "kettle", "ally", "patrol", "insert", "meat", "extraterrestrial", "deliver", "burn", "storm", "reliance", "disturbance", "payment", "observation" };
+	vector<string> vec = { "fluctuation", "total", "different", "suntan", "industry", "exercise", "beer", "sum", "substitute", "triangle", "sick", "gem", "tragedy", "suit", "gallery", "owner", "cherry", "wound", "friendly", "galaxy", "execute", "so", "leader", "hole", "shift", "haunt", "apathy", "technology", "last", "consensus", "company", "board", "pony", "tumble", "dawn", "record", "recommendation", "kettle", "ally", "patrol", "insert", "meat", "extraterrestrial", "deliver", "burn", "storm", "reliance", "disturbance", "payment", "observation" };;
+	list<string> listik = { "fluctuation", "total", "different", "suntan", "industry", "exercise", "beer", "sum", "substitute", "triangle", "sick", "gem", "tragedy", "suit", "gallery", "owner", "cherry", "wound", "friendly", "galaxy", "execute", "so", "leader", "hole", "shift", "haunt", "apathy", "technology", "last", "consensus", "company", "board", "pony", "tumble", "dawn", "record", "recommendation", "kettle", "ally", "patrol", "insert", "meat", "extraterrestrial", "deliver", "burn", "storm", "reliance", "disturbance", "payment", "observation" };;
+
+	auto it = arr.begin();
+	while (true) {
+		it = find_if(it, arr.end(), [](string& a) {return a[0] == 'a'; });
+		if (it == arr.end()) {
+			break;
+		}
+		cout << *it << endl;
+		it++;
+	}
+	cout << endl;
+	
+	auto itv = vec.begin();
+	while (true) {
+		itv = find_if(itv, vec.end(), [](string& a) {return a[0] == 'a'; });
+		if (itv == vec.end()) {
+			break;
+		}
+		cout << *itv << endl;
+		itv++;
+	}
+	cout << endl;
+	
+	auto itl = listik.begin();
+	while (true) {
+		itl = find_if(itl, listik.end(), [](string& a) {return a[0] == 'a'; });
+		if (itl == listik.end()) {
+			break;
+		}
+		cout << *itl << endl;
+		itl++;
+	}
+	cout << endl;
+
+	cout << *max_element(arr.begin(), arr.end(), [](string& a, string &b) {return a.size() < b.size(); }) << endl;
+	cout << *max_element(vec.begin(), vec.end(), [](string& a, string& b) {return a.size() < b.size(); }) << endl;
+	cout << *max_element(listik.begin(), listik.end(), [](string& a, string& b) {return a.size() < b.size(); }) << endl;
+
+	transform(arr.begin(), arr.end(), arr.begin(), [](string s) {
+		transform(s.begin(), s.end(), s.begin(), []( char c) {
+			if (isVowel(c)) {
+				return '*';
+			}
+			else {
+				return c;
+			}
+			
+			});
+		return s;
+		});
+
+	transform(vec.begin(), vec.end(), vec.begin(), [](string s) {
+		transform(s.begin(), s.end(), s.begin(), [](char c) {
+			if (isVowel(c)) {
+				return '*';
+			}
+			else {
+				return c;
+			}
+
+			});
+		return s;
+		});
+
+	transform(listik.begin(), listik.end(), listik.begin(), [](string s) {
+		transform(s.begin(), s.end(), s.begin(), [](char c) {
+			if (isVowel(c)) {
+				return '*';
+			}
+			else {
+				return c;
+			}
+
+			});
+		return s;
+		});
+
+	for (auto elem : arr) {
+		cout << elem << " ";
+	}
+
+	vector<string> new_vec;
+	list<string> new_list;
+	array<string, 14> new_arr;
+
+	copy_if(new_arr.begin(), new_arr.end(), back_inserter(new_list), [](string& a) { return a.size() > 7; });
+	copy_if(vec.begin(), vec.end(),back_inserter(new_vec),[](string &a) { return a.size() > 7; });
+	copy_if(listik.begin(), listik.end(),back_inserter(new_list), [](string& a) { return a.size() > 7; });
+
+	for (auto elem : new_vec) {
+		cout << elem << " ";
+	}
+	cout << endl;
+}
