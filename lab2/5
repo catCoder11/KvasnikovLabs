@@ -28,9 +28,9 @@ void inpVehicle(Vehicle& veh) {
     int numType;
     intInp(numType, 1, 3);
     switch (numType) {
-    case 1: {veh.type = Car; break; }
-    case 2: {veh.type = Truck; break; }
-    case 3: {veh.type = Motorcycle; break; }
+    case 1: { veh.type = Car; break; }
+    case 2: { veh.type = Truck; break; }
+    case 3: { veh.type = Motorcycle; break; }
     }
 
     cout << "Введите модель: ";
@@ -42,12 +42,12 @@ void inpVehicle(Vehicle& veh) {
 
 }
 
-void printVehicle(Vehicle veh) {
+void printVehicle(Vehicle& veh) {
     string type;
     switch (veh.type) {
-    case 0: {type = "Car"; break; }
-    case 1: {type = "Truck"; break; }
-    case 2: {type = "Motorcycle"; break; }
+    case Car: { type = "Car"; break; }
+    case Truck: { type = "Truck"; break; }
+    case Motorcycle: { type = "Motorcycle"; break; }
     };
     cout << "Автомобиль: " << type << "; модель: " << veh.model
         << " (" << veh.engine.power << "|" << veh.engine.volume << ")" << endl;
