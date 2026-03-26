@@ -1,0 +1,71 @@
+// что не так с последним заданием?
+
+
+#include <iostream>
+#include <string>
+#include <array>
+#include <vector>
+#include <list>
+#include <random>
+#include <algorithm>
+#include <iterator>
+using namespace std;
+
+struct Student {
+	string name;
+	int id;
+	double gpa;
+};
+
+void printStud(Student& st) {
+	cout << "<" << st.id << ">:'" << st.name << "'(" << st.gpa << ")" << endl;
+}
+int main() {
+	setlocale(LC_ALL, "Russian");
+	random_device rd;
+	mt19937 gen(rd());
+	uniform_int_distribution<> distrib(0, 10000);
+
+	array<Student, 1000> arr;
+	vector<Student> vec;
+	list<Student> listik;
+
+	for (int i = 0; i < 1000; i++) {
+		Student st = { "Вася" + to_string(i), i, (double)(distrib(gen))/100};
+		arr[i] = st;
+		vec.push_back(st);
+		listik.push_back(st);
+	}
+
+	sort(arr.begin(), arr.end(), [](const Student& a, const Student& b) {return a.gpa > b.gpa; });
+	sort(vec.begin(), vec.end(), [](const Student& a, const Student& b) {return a.gpa > b.gpa; });
+	listik.sort([](const Student& a, const Student& b) {return a.gpa > b.gpa; });
+
+	for (int i = 0; i < 5; i++) {
+		printStud(arr[i]);
+	}
+	cout << endl;
+
+	sort(arr.begin(), arr.end(), [](const Student& a, const Student& b) {return a.id < b.id; });
+	sort(vec.begin(), vec.end(), [](const Student& a, const Student& b) {return a.id < b.id; });
+	listik.sort([](const Student& a, const Student& b) {return a.id < b.id; });
+
+	for (int i = 0; i < 5; i++) {
+		printStud(vec[i]);
+	}
+	cout << endl;
+
+	sort(arr.begin(), arr.end(), [](const Student& a, const Student& b) {return a.name < b.name; });
+	sort(vec.begin(), vec.end(), [](const Student& a, const Student& b) {return a.name < b.name; });
+	listik.sort([](const Student& a, const Student& b) {return a.name < b.name; });
+
+	auto it = listik.begin();
+	for (int i = 0; i < 5; i++) {
+		printStud(*it);
+		it++;
+	}
+	cout << endl;
+	
+	
+
+}
