@@ -34,12 +34,12 @@ void inpVehicle(Vehicle& veh) {
 
 }
 
-void printVehicle(Vehicle veh) {
+void printVehicle(Vehicle& veh) {
     string type;
     switch (veh.type) {
-    case 0: {type = "Car"; break; }
-    case 1: {type = "Truck"; break; }
-    case 2: {type = "Motorcycle"; break; }
+    case 0: { type = "Car"; break; }
+    case 1: { type = "Truck"; break; }
+    case 2: { type = "Motorcycle"; break; }
     };
     cout << "Автомобиль: " << type << "; модель: " << veh.model
         << " (" << veh.power << "|" << veh.volume << ")" << endl;
@@ -73,13 +73,13 @@ void engineSort(Vehicle* vehicles, int n) {
 void checkTime() {
     Vehicle array[100];
     double time;
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < 1000; i++) {
         array[i].power = 100 - i;
     }
     clock_t start = clock();
-    engineSort(array, 100);
+    engineSort(array, 1000);
     time = (clock() - start) / (double)CLOCKS_PER_SEC;
-    cout << time << " секунд на сортировку 100 элементов";
+    cout << time << " секунд на сортировку 1000 элементов";
 }
 int main(int, char**) {
     setlocale(LC_ALL, "ru");
