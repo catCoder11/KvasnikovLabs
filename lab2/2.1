@@ -54,7 +54,11 @@ int main(int, char**) {
 	printBooks(books, library, COUNT);
 	cout << "Книга Булгакова:" << endl;
 	int ind = findBook(books, COUNT, "Булгаков", 1);
-	cout << books[ind].author << ": '" << books[ind].name << "'(" << library.years[ind] << ")" << endl;
-
+	if (ind == -1) {
+		cout << "Упс. Не нашли автора" << endl;
+	}
+	else {
+		cout << books[ind].author << ": '" << books[ind].name << "'(" << library.years[ind] << ")" << endl;
+	}
 	delete[] books;
 }
