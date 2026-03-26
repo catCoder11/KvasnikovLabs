@@ -2,18 +2,20 @@
 using namespace std;
 
 void printWeather(string* day, int* temp, bool* downFall, int id) {
+    cout << "This day is " << day[id] << ", " << temp[id];
     switch (downFall[id]) {
     case true: {
-        cout << "This day is " << day[id] << ", " << temp[id] << " Celcia with downfall" << endl;
+        cout << " Celcia with downfall" << endl;
         break;
     }
     case false: {
-        cout << "This day is " << day[id] << ", " << temp[id] << " Celcia with no downfall" << endl;
+        cout << " Celcia with no downfall" << endl;
         break;
     }
     }
 
 }
+
 void getHotDay(string* day, int* temp, bool* downFall, int n) {
     int id = 0;
     for (int i = 1; i < n; i++) {
