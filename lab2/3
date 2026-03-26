@@ -24,38 +24,39 @@ void printWeather(const Weather& weather) {
         day = "Monday";
         break;
     }
-    case 2: {
+    case Day::Tuesday: {
         day = "Tuesday";
         break;
     }
-    case 3: {
+    case Day::Wednesday: {
         day = "Wednesday";
         break;
     }
-    case 4: {
+    case Day::Thursday: {
         day = "Thursday";
         break;
     }
-    case 5: {
+    case Day::Friday: {
         day = "Friday";
         break;
     }
-    case 6: {
+    case Day::Saturday: {
         day = "Saturday";
         break;
     }
-    case 7: {
+    case Day::Sunday: {
         day = "Sunday";
         break;
     }
     }
+    cout << "This day is " << day << ", " << weather.temperature;
     switch (weather.osadki) {
     case true: {
-        cout << "This day is " << day << ", " << weather.temperature << " Celcia with downfall" << endl;
+        cout << " Celcia with downfall" << endl;
         break;
     }
     case false: {
-        cout << "This day is " << day << ", " << weather.temperature << " Celcia with no downfall" << endl;
+        cout << " Celcia with no downfall" << endl;
         break;
     }
     }
