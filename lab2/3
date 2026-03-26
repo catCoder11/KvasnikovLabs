@@ -17,10 +17,10 @@ struct Weather {
     bool osadki;
 };
 
-void printWeather(Weather weather) {
+void printWeather(const Weather& weather) {
     string day;
     switch (weather.day) {
-    case 1: {
+    case Day::Monday: {
         day = "Monday";
         break;
     }
