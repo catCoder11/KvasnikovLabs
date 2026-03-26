@@ -71,10 +71,10 @@ void engineSort(Vehicle* vehicles, int n) {
 
 
 void checkTime() {
-    Vehicle array[100];
+    Vehicle array[1000];
     double time;
     for (int i = 0; i < 1000; i++) {
-        array[i].power = 100 - i;
+        array[i].power = 1000 - i;
     }
     clock_t start = clock();
     engineSort(array, 1000);
