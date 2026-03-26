@@ -74,11 +74,6 @@ int main(int, char**) {
         {"Богдан", 7, {"Вершинина", 39, 130}},
         {"Данил", 15, {"Никитина", 8, 111}} };
 
-    ploskyPerson* plDudes = new ploskyPerson[COUNT]{
-        {"Богдан", 7, "Вершинина", 39, 130},
-        {"Данил", 15, "Никитина", 8, 111},
-        {"Дима", 100, "Косарева", 35, 204} };
-
     inpPerson(dudes[2]);
     printPeople(dudes, COUNT);
     cout << endl << "Введите улицу: ";
@@ -88,6 +83,6 @@ int main(int, char**) {
 
 
     cout << "Сравнение struct и двумерного массива: " << endl;
-    cout << sizeof(dudes) << endl;
-    cout << sizeof(plDudes) << endl;
+    cout << sizeof(Person) << endl;
+    cout << sizeof(ploskyPerson) << endl;
 }
