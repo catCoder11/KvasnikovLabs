@@ -1,6 +1,3 @@
-// что не так с последним заданием?
-
-
 #include <iostream>
 #include <string>
 #include <array>
@@ -20,6 +17,7 @@ struct Student {
 void printStud(Student& st) {
 	cout << "<" << st.id << ">:'" << st.name << "'(" << st.gpa << ")" << endl;
 }
+
 int main() {
 	setlocale(LC_ALL, "Russian");
 	random_device rd;
@@ -30,22 +28,27 @@ int main() {
 	vector<Student> vec;
 	list<Student> listik;
 
+	//A,B
 	for (int i = 0; i < 1000; i++) {
-		Student st = { "Вася" + to_string(i), i, (double)(distrib(gen))/100};
+		Student st = { "Вася" + to_string(i), i, (double)(distrib(gen)) / 100 };
 		arr[i] = st;
 		vec.push_back(st);
 		listik.push_back(st);
 	}
 
+	//C,D,E
+	//По gpa
 	sort(arr.begin(), arr.end(), [](const Student& a, const Student& b) {return a.gpa > b.gpa; });
 	sort(vec.begin(), vec.end(), [](const Student& a, const Student& b) {return a.gpa > b.gpa; });
 	listik.sort([](const Student& a, const Student& b) {return a.gpa > b.gpa; });
-
+	cout << "Сортировка по gpa:" << endl;
 	for (int i = 0; i < 5; i++) {
 		printStud(arr[i]);
 	}
 	cout << endl;
 
+	//По id
+	cout << "Сортировка по id:" << endl;
 	sort(arr.begin(), arr.end(), [](const Student& a, const Student& b) {return a.id < b.id; });
 	sort(vec.begin(), vec.end(), [](const Student& a, const Student& b) {return a.id < b.id; });
 	listik.sort([](const Student& a, const Student& b) {return a.id < b.id; });
@@ -55,6 +58,8 @@ int main() {
 	}
 	cout << endl;
 
+	//По name
+	cout << "Сортировка по name:" << endl;
 	sort(arr.begin(), arr.end(), [](const Student& a, const Student& b) {return a.name < b.name; });
 	sort(vec.begin(), vec.end(), [](const Student& a, const Student& b) {return a.name < b.name; });
 	listik.sort([](const Student& a, const Student& b) {return a.name < b.name; });
@@ -65,7 +70,7 @@ int main() {
 		it++;
 	}
 	cout << endl;
-	
-	
+
+
 
 }
