@@ -6,15 +6,28 @@
 #include <random>
 using namespace std;
 
+void print_cont(vector<int>& vec, list<int>& listik) {
+	for (int i = 0; i < vec.size(); i++) {
+		cout << vec[i] << "  ";
+	}
+	cout << "\n\n";
+	auto cur_el = listik.begin();
+	for (int i = 0; i < listik.size(); i++) {
+		cout << *cur_el++ << "  ";
+	}
+	cout << endl;
+}
 int main() {
-	array<int, 1000> arr;
-	vector<int> vec(1000);
-	list<int> listik(1000);
+	setlocale(LC_ALL, "Russian");
+	array<int, 100> arr;
+	vector<int> vec(100);
+	list<int> listik(100);
 
 	random_device rd;
 	mt19937 engine(rd());
 	uniform_int_distribution<int> dist(1, 1000);
 
+	// Создание 100 случайных чисел для каждого массива
 	generate(arr.begin(), arr.end(), [&]() {
 		return dist(engine);
 		});
@@ -24,40 +37,38 @@ int main() {
 	generate(listik.begin(), listik.end(), [&]() {
 		return dist(engine);
 		});
+	//array статичен. Все действия ниже нельзя выполнить с ним.
 
+	cout << "Контейнеры до:" << endl;
+	print_cont(vec, listik);
+	cout << endl;
+	//добавление в конец
+	vec.insert(vec.begin() + 50, 999);
+	auto it = listik.begin();
+	advance(it, 50);
+	listik.insert(it, 999);
 
-	//array скипнул
+	//удаление элемента с i=25
+	vec.erase(vec.begin() + 25);
+	advance(it, -25);
+	listik.erase(it);
 
-	vec.insert(vec.begin()+50, 999);
-	vec.erase(vec.begin()+25);
+	//удаление всех m[i] > 500
 	for (int i = 0; i < vec.size(); i++) {
 		while (i < vec.size() && vec[i] > 500) {
 			vec.erase(vec.begin() + i);
 		}
 	}
-	cout << vec.size() << endl;
-
-	auto it = listik.begin();
-	advance(it, 50);
-	listik.insert(it, 999);
-	advance(it, -25);
-	listik.erase(it);
 	for (int i = 501; i < 1001; i++) {
 		listik.remove(i);
 	}
+	
+	cout << "Контейнеры после:" << endl;
+	print_cont(vec, listik);
+	cout << endl;
+
+	//Вывод оставшихся значений
+	cout << "Осталось элементов: " << endl;
+	cout << vec.size() << endl;
 	cout << listik.size() << endl;
-
-
-
-	for (int i = 0; i < vec.size(); i++) {
-		cout << vec[i] << "  ";
-	}
-	cout << endl;
-
-	auto cur_el = listik.begin();
-	for (int i = 0; i < listik.size(); i++) {
-		cout << *cur_el++ << "  ";
-	}
-	cout << endl;
-
 }
