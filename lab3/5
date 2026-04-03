@@ -1,0 +1,72 @@
+#include <ctime>
+#include <iostream>
+#include <array>
+#include <vector>
+#include <list>
+#include <random>
+#include <chrono>
+using namespace std;
+
+
+int main(int, char**) {
+    setlocale(LC_ALL, "ru");
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> distrib(0, 1000);
+    array<int, 100000> arr;
+    vector<int> vec;
+    list<int> listik;
+    vec.resize(100000);
+    for (int i = 0; i < 100000; i++) {
+        arr[i] = distrib(gen);
+        vec[i] = distrib(gen);
+        listik.push_back(distrib(gen));
+    }
+
+    auto start, end, time;
+    chrono::duration<double, milli> elapsed;
+    
+    
+    start = chrono::steady_clock::now();
+
+    int sum = 0;
+    for (int i = 0; i < 100000; i++) {
+        sum += arr[i];
+    }
+    cout << sum << endl;
+
+    end = chrono::steady_clock::now();
+    elapsed = end - start;
+    time = elapsed.count();
+    cout << time << endl;
+
+    start = chrono::steady_clock::now();
+    
+    int sum = 0;
+    for (int i = 0; i < 100000; i++) {
+        sum += vec[i];
+    }
+    cout << sum << endl;
+
+    end = chrono::steady_clock::now();
+    elapsed = end - start;
+    time = elapsed.count();
+    cout << time << endl;
+
+    start = chrono::steady_clock::now();
+
+    int sum = 0;
+    auto it = listik.begin();
+    for (int i = 0; i < 100000; i++) {
+        sum += *it;
+        it++;
+    }
+    cout << sum << endl;
+
+    end = chrono::steady_clock::now();
+    elapsed = end - start;
+    time = elapsed.count();
+    cout << time << endl;
+
+    
+}
