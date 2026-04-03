@@ -1,4 +1,3 @@
-#include <ctime>
 #include <iostream>
 #include <array>
 #include <vector>
@@ -7,6 +6,14 @@
 #include <chrono>
 using namespace std;
 
+template <typename F, typename... Args>
+double getTime(F&& func, Args&&... args) {
+    auto start = chrono::steady_clock::now();
+    func(args...);
+    auto end = chrono::steady_clock::now();
+    chrono::duration<double, milli> elapsed = end - start;
+    return elapsed.count();
+}
 
 int main(int, char**) {
     setlocale(LC_ALL, "ru");
@@ -22,51 +29,116 @@ int main(int, char**) {
         vec[i] = distrib(gen);
         listik.push_back(distrib(gen));
     }
+    cout << "(Время в миллисекундах)" << endl;
+    cout << endl;
+    cout << "Обход элементов и сумма: " << endl;
+    cout << endl;
 
-    auto start, end, time;
-    chrono::duration<double, milli> elapsed;
-    
-    
-    start = chrono::steady_clock::now();
+    cout << "Время array:" << getTime([](array<int, 100000>& arr)
+        {
+            int sum = 0;
+            for (int i = 0; i < 100000; i++) 
+            {
+                sum += arr[i];
+            }
+            cout << "Сумма: " << sum << endl;
+        }, arr) << endl;
+    cout << "Время vector:" << getTime([](vector<int>& vec)
+        {
+            int sum = 0;
+            for (int i = 0; i < 100000; i++) {
+                sum += vec[i];
+            }
+            cout << "Сумма: " << sum << endl;
+        }, vec) << endl;
+    cout << "Время list:" << getTime([](list<int>& listik)
+        {
+            int sum = 0;
+            auto it = listik.begin();
+            for (int i = 0; i < 100000; i++) {
+                sum += *it;
+                it++;
+            }
+            cout << "Сумма: " << sum << endl;
+        }, listik) << endl;
 
-    int sum = 0;
-    for (int i = 0; i < 100000; i++) {
-        sum += arr[i];
-    }
-    cout << sum << endl;
+    cout << endl;
+    cout << "Произвольный доступ: " << endl;
+    cout << endl;
 
-    end = chrono::steady_clock::now();
-    elapsed = end - start;
-    time = elapsed.count();
-    cout << time << endl;
+    cout << "Время array:" << getTime([](array<int, 100000>& arr)
+        {
+            cout << "Элементы: " << arr[0] << " " << arr[25000] << " " << arr[50000] << " " << arr[75000] << " " << arr[99999] << endl;
+        }, arr) << endl;
+    cout << "Время vector:" << getTime([](vector<int>& vec)
+        {
+            cout << "Элементы: " << vec[0] << " " << vec[25000] << " " << vec[50000] << " " << vec[75000] << " " << vec[99999] << endl;
+        }, vec) << endl;
+    cout << "Время list:" << getTime([](list<int>& listik)
+        {
+            auto it = listik.begin();
+            cout << "Элементы: "
+                << *it << " "
+                << *next(it, 25000) << " "
+                << *next(it, 50000) << " "
+                << *next(it, 75000) << " "
+                << *next(it, 99999) << endl;
+        }, listik) << endl;
 
-    start = chrono::steady_clock::now();
-    
-    int sum = 0;
-    for (int i = 0; i < 100000; i++) {
-        sum += vec[i];
-    }
-    cout << sum << endl;
+    cout << endl;
+    cout << "Вставка в конце: " << endl;
+    cout << endl;
 
-    end = chrono::steady_clock::now();
-    elapsed = end - start;
-    time = elapsed.count();
-    cout << time << endl;
+    cout << "[array не поддерживает]" << endl;
+    cout << "Время vector:" << getTime([](vector<int>& vec)
+        {
+            for (int i = 0; i < 1000; i++) {
+                vec.push_back(i);
+            }
+        }, vec) << endl;
+    cout << "Время list:" << getTime([](list<int>& listik)
+        {
+            for (int i = 0; i < 1000; i++) {
+                listik.push_back(i);
+            }
+        }, listik) << endl;
 
-    start = chrono::steady_clock::now();
+    cout << endl;
+    cout << "Вставка в середине: " << endl;
+    cout << endl;
 
-    int sum = 0;
-    auto it = listik.begin();
-    for (int i = 0; i < 100000; i++) {
-        sum += *it;
-        it++;
-    }
-    cout << sum << endl;
+    cout << "[array не поддерживает]" << endl;
+    cout << "Время vector:" << getTime([](vector<int>& vec)
+        {
+            for (int i = 0; i < 100; i++) {
+                vec.insert(vec.begin()+5000, i);
+            }
+        }, vec) << endl;
+    cout << "Время list:" << getTime([](list<int>& listik)
+        {
+            auto it = listik.begin();
+            for (int i = 0; i < 100; i++) {
+                listik.insert(next(it, 5000), i);
+            }
+        }, listik) << endl;
 
-    end = chrono::steady_clock::now();
-    elapsed = end - start;
-    time = elapsed.count();
-    cout << time << endl;
+    cout << endl;
+    cout << "Удаление из середины: " << endl;
+    cout << endl;
 
-    
+    cout << "[array не поддерживает]" << endl;
+    cout << "Время vector:" << getTime([](vector<int>& vec)
+        {
+            for (int i = 0; i < 100; i++) {
+                vec.erase(vec.begin()+5000);
+            }
+        }, vec) << endl;
+    cout << "Время list:" << getTime([](list<int>& listik)
+        {
+            auto it = listik.begin();
+            for (int i = 0; i < 100; i++) {
+                listik.erase(next(it, 5000));
+            }
+        }, listik) << endl;
+
 }
