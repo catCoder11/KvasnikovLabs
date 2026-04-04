@@ -38,9 +38,10 @@ int main() {
 
 	//C,D,E
 	//По gpa
-	sort(arr.begin(), arr.end(), [](const Student& a, const Student& b) {return a.gpa > b.gpa; });
-	sort(vec.begin(), vec.end(), [](const Student& a, const Student& b) {return a.gpa > b.gpa; });
-	listik.sort([](const Student& a, const Student& b) {return a.gpa > b.gpa; });
+	auto gpa_sort = [](const Student& a, const Student& b) {return a.gpa > b.gpa; };
+	sort(arr.begin(), arr.end(), gpa_sort);
+	sort(vec.begin(), vec.end(), gpa_sort);
+	listik.sort(gpa_sort);
 	cout << "Сортировка по gpa:" << endl;
 	for (int i = 0; i < 5; i++) {
 		printStud(arr[i]);
@@ -48,10 +49,11 @@ int main() {
 	cout << endl;
 
 	//По id
+	auto id_sort = [](const Student& a, const Student& b) {return a.id < b.id; };
 	cout << "Сортировка по id:" << endl;
-	sort(arr.begin(), arr.end(), [](const Student& a, const Student& b) {return a.id < b.id; });
-	sort(vec.begin(), vec.end(), [](const Student& a, const Student& b) {return a.id < b.id; });
-	listik.sort([](const Student& a, const Student& b) {return a.id < b.id; });
+	sort(arr.begin(), arr.end(), id_sort);
+	sort(vec.begin(), vec.end(), id_sort);
+	listik.sort(id_sort);
 
 	for (int i = 0; i < 5; i++) {
 		printStud(vec[i]);
@@ -59,10 +61,11 @@ int main() {
 	cout << endl;
 
 	//По name
+	auto name_sort = [](const Student& a, const Student& b) {return a.name < b.name; };
 	cout << "Сортировка по name:" << endl;
-	sort(arr.begin(), arr.end(), [](const Student& a, const Student& b) {return a.name < b.name; });
-	sort(vec.begin(), vec.end(), [](const Student& a, const Student& b) {return a.name < b.name; });
-	listik.sort([](const Student& a, const Student& b) {return a.name < b.name; });
+	sort(arr.begin(), arr.end(), name_sort);
+	sort(vec.begin(), vec.end(), name_sort);
+	listik.sort(name_sort);
 
 	auto it = listik.begin();
 	for (int i = 0; i < 5; i++) {
