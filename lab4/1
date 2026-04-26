@@ -1,1 +1,19 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
 
+
+int main(int, char**) {
+	setlocale(LC_ALL, "Russian");
+	const char* chr = "Поставьте 10, пожалуйста";
+	string str = "Поставьте 10, пожалуйста";
+	string str2 = " я старался";
+	cout << chr << endl;
+	cout << str << endl;
+
+	cout << strlen(chr) << endl;
+	cout << str.size() << endl;
+
+	cout << str + str2 << endl;
+	cout << (chr == str);
+}
