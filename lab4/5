@@ -1,0 +1,63 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cctype>
+using namespace std;
+
+unsigned int findAll(string str, string sub) {
+	unsigned int count = 0;
+	while (str.find(sub) != string::npos) {
+		count++;
+		str.erase(0, str.find(sub) + sub.size());
+	}
+	return count;
+}
+
+void replAll(string& str, string old_str, string new_str) {
+	while (str.find(old_str) != string::npos) {
+		str.replace(str.find(old_str), old_str.size(), new_str);
+	}
+}
+
+int main(int, char**) {
+	setlocale(LC_ALL, "Russian");
+	vector<string> vec = {"+7 (999) 123-45-67",
+	"8-999-123-45-67",
+	"+1 212 456-7890",
+	"999-123-45-67",
+	"+7999123456789",
+	"123456789"
+	};
+	unsigned int good_nums = 0;
+	unsigned int bad_nums = 0;
+	for (string str : vec) {
+		string num = "";
+		auto it = str.begin();
+		if (isdigit(*it)) {
+			num = num + "7" + (*it);
+		}
+		else if ((*it) != '+') {
+			bad_nums++;
+			continue;
+		}
+		it++;
+		for (; it < str.end(); it++) {
+			if (isdigit(*it)) {
+				num += (*it);
+			}
+			else if (!((*it) == '(' || (*it) == ')' || (*it) == '-' || (*it) == ' ')) {
+				bad_nums++;
+				break;
+			}
+		}
+		if (it == str.end() && num.size() == 11) {
+			cout << string{'+', num[0], ' ', '(', num[1], num[2], num[3], ')', ' ', num[4], num[5], num[6], '-', num[7], num[8], '-', num[9], num[10]} << endl;
+			good_nums++;
+		}
+		else {
+			bad_nums++;
+		}
+	}
+	cout << "Хороших номеров: " << good_nums << endl;
+	cout << "Плохих номеров: " << bad_nums << endl;
+}
