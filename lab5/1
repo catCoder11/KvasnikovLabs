@@ -1,0 +1,97 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cctype>
+#include <fstream>
+#include <cstdio>
+using namespace std;
+
+struct Student {
+	string name="";
+	int age=0;
+	float grade=-1;
+};
+
+void addStudent(string& file_name, Student& st) {
+	if (file_name.substr(file_name.size() - 4) != ".txt") {
+		cout << "Неверный формат файла" << endl;
+		return;
+	}
+	if (file_name.find(' ') != string::npos) {
+		cout << "Некорректное имя студента" << endl;
+	}
+	ofstream fout(file_name, ios::app);
+	if (!fout.is_open()) {
+		cout << "Ошибка открытия файла. Sorry(" << endl;
+		fout.close();
+		return;
+	}
+	if (st.age <= 0 || st.name.size() == 0 || st.grade < 0) {
+		cout << "Попытка сохранить неверные данные студента" << endl;
+		fout.close();
+		return;
+	}
+	fout << st.name << ' ' << st.age << ' ' << st.grade << endl;
+	fout.close();
+}
+void addStudent(const char* file_name, Student& st) {
+	string s = file_name;
+	addStudent(s, st);
+}
+
+vector<Student> getStudents(string& file_name) {
+	vector<Student> vec;
+	if (file_name.substr(file_name.size() - 4) != ".txt") {
+		cout << "Неверный формат файла" << endl;
+		return vec;
+	}
+	ifstream fin(file_name);
+	if (!fin.is_open()) {
+		cout << "Студентов не будет. Ошибка. Нет такого файла" << endl;
+		fin.close();
+		return vec;
+	}
+	Student st;
+	while (fin >> st.name >> st.age >> st.grade) {
+		vec.push_back(st);
+	}
+	fin.close();
+	return vec;
+}
+vector<Student> getStudents(const char* file_name) {
+	string s = file_name;
+	return getStudents(s);
+}
+
+void printStudents(vector<Student>& vec) {
+	for (Student st : vec) {
+		cout << st.name << " " << st.age << " " << st.grade << endl;
+	}
+}
+void printStudents(vector<Student> vec) {
+	for (Student st : vec) {
+		cout << st.name << " " << st.age << " " << st.grade << endl;
+	}
+}
+
+
+int main(int, char**) {
+	setlocale(LC_ALL, "Russian");
+	Student st, st2, st3;
+	string file_name = "списокНаОтчисление.txt";
+	addStudent("money.png", st);
+	addStudent(file_name, st);
+	st2.name = "МиковКирилл";
+	st2.age = 19;
+	st2.grade = 44;
+	addStudent(file_name, st2);
+	st3.name = "КвасниковДмитрий";
+	st3.age = 19;
+	st3.grade = 36;
+	addStudent(file_name, st3);
+	printStudents(getStudents(file_name));
+
+	if (std::remove("списокНаОтчисление.txt") == 0) {
+		// Файл успешно удален
+	}
+}
