@@ -11,9 +11,9 @@ int main(int, char**) {
 	cout << chr << endl;
 	cout << str << endl;
 
-	cout << strlen(chr) << endl;
-	cout << str.size() << endl;
+	cout << "длина char" << strlen(chr) << endl;
+	cout << "длина string" << str.size() << endl;
 
 	cout << str + str2 << endl;
-	cout << (chr == str);
+	(chr == str) ? cout << "char и str равны" : cout << "char и str не равны";
 }
