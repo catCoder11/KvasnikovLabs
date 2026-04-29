@@ -63,12 +63,7 @@ vector<Student> getStudents(const char* file_name) {
 	return getStudents(s);
 }
 
-void printStudents(vector<Student>& vec) {
-	for (Student st : vec) {
-		cout << st.name << " " << st.age << " " << st.grade << endl;
-	}
-}
-void printStudents(vector<Student> vec) {
+void printStudents(const vector<Student>& vec) {
 	for (Student st : vec) {
 		cout << st.name << " " << st.age << " " << st.grade << endl;
 	}
