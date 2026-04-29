@@ -1,6 +1,6 @@
 #include <iostream>
 using namespace std;
-void replAll(string& str, string old_str, string new_str) {
+void replAll(string& str, const string& old_str, const string& new_str) {
 	while (str.find(old_str) != string::npos) {
 		str.replace(str.find(old_str), old_str.size(), new_str);
 	}
@@ -24,6 +24,6 @@ int main(int, char**) {
 	replAll(str, "o", "0");
 	cout << str << endl;
 
-	string sub_str = str.substr(4, 4);
+	string sub_str = str.substr(3, 4);
 	cout << "Подстрока: " << sub_str << endl;
 }
