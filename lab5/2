@@ -1,0 +1,156 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cctype>
+#include <fstream>
+#include <cstdio>
+using namespace std;
+
+const char* FILE_NAME = "products.bin";
+struct Product {
+private:
+	int id;
+	int amount;
+	float cost;
+	string name;
+
+public:
+	Product() {
+		this->id = 0;
+		this->amount = 0;
+		this->cost = 0;
+		this->name = "";
+	}
+	Product(int id, string name, float cost, int amount) {
+		this->set_id(id);
+		this->set_name(name);
+		this->set_cost(cost);
+		this->set_amount(amount);
+	}
+	int get_id() {
+		return id;
+	}
+	int get_amount() {
+		return amount;
+	}
+	float get_cost() {
+		return cost;
+	}
+	string get_name() {
+		return name;
+	}
+
+	void set_id(int id) {
+		if (id < 0) throw std::invalid_argument("Id не может быть отрицательным");
+		this->id = id;
+	}
+	void set_amount(int amount) {
+		if (amount < 0) throw std::invalid_argument("Число товаров не может быть отрицательным");
+		this->amount = amount;
+	}
+	void set_cost(float cost) {
+		if (cost < 0) throw std::invalid_argument("Цена не может быть отрицательным");
+		this->cost = cost;
+	}
+	void set_name(string name) {
+		if (name.size() > 50) throw std::invalid_argument("Слишком длинное название");
+		if (name.size() == 0) throw std::invalid_argument("Необходимо название");
+		this->name = name;
+	}
+
+
+};
+
+
+void addProduct(Product& p) {
+	if (p.get_name().size() == 0) {
+		cout << "Некорректный товар" << endl;
+		return;
+	}
+	ofstream fout(FILE_NAME, ios::binary | ios::app);
+	if (!fout.is_open()) {
+		cout << "Ошибка открытия файла. Sorry(" << endl;
+		return;
+	}
+	int id = p.get_id();
+	int amount = p.get_amount();
+	float cost = p.get_cost();
+	string name = p.get_name();
+	int size = name.size();
+
+	fout.write((char*)&id, sizeof(id));
+	fout.write((char*)&cost, sizeof(cost));
+	fout.write((char*)&amount, sizeof(amount));
+	fout.write((char*)&size, sizeof(size));
+	fout.write(name.data(), size);
+	fout.close();
+}
+
+vector<Product> getProducts() {
+	vector<Product> vec;
+	ifstream fin(FILE_NAME, ios::binary);
+	if (!fin.is_open()) {
+		cout << "Студентов не будет. Ошибка. Нет такого файла" << endl;
+		fin.close();
+		return vec;
+	}
+	int id, amount, size;
+	float cost;
+	while (fin.read((char*)&id, sizeof(id))) {
+		fin.read((char*)&cost, sizeof(cost));
+		fin.read((char*)&amount, sizeof(amount));
+		fin.read((char*)&size, sizeof(size));
+		string name;
+		name.resize(size);
+		fin.read(&(name[0]), size);
+		vec.push_back(Product(id, name, cost, amount));
+	}
+	fin.close();
+	return vec;
+}
+
+void printProduct(Product& p) {
+	cout << "Id: " << p.get_id() << "	Имя: " << p.get_name() << "	Цена: " << p.get_cost() << "	Кол-во: " << p.get_amount() << endl;
+}
+void printProduct(Product&& p) {
+	cout << "Id: " << p.get_id() << "	Имя: " << p.get_name() << "	Цена: " << p.get_cost() << "	Кол-во: " << p.get_amount() << endl;
+}
+
+void printProducts(const vector<Product>& vec) {
+	for (Product p : vec) {
+		printProduct(p);
+	}
+}
+
+Product findProduct(int id) {
+	for (Product p : getProducts()) {
+		if (p.get_id() == id) return p;
+	}
+	return Product();
+}
+
+float sumProducts() {
+	float sum = 0;
+	for (Product p : getProducts()) {
+		sum += p.get_cost() * p.get_amount();
+	}
+	return sum;
+}
+
+int main(int, char**) {
+	setlocale(LC_ALL, "Russian");
+	Product p1(1, "Арбуз", 12.44, 14);
+	Product p2(2, "Стол", 199.99, 10);
+	Product p3(3, "Кот в мешке", 9999.5, 1);
+	addProduct(p1);
+	addProduct(p2);
+	addProduct(p3);
+
+	printProducts(getProducts());
+	printProduct(findProduct(2));
+	cout << sumProducts() << endl;
+
+	if (std::remove(FILE_NAME) == 0) {
+		cout << "Файл успешно удален" << endl;
+	}
+}
