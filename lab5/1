@@ -17,7 +17,7 @@ void addStudent(string& file_name, Student& st) {
 		cout << "Неверный формат файла" << endl;
 		return;
 	}
-	if (file_name.find(' ') != string::npos) {
+	if (st.name.find(' ') != string::npos) {
 		cout << "Некорректное имя студента" << endl;
 	}
 	ofstream fout(file_name, ios::app);
