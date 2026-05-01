@@ -4,16 +4,17 @@
 #include <cctype>
 using namespace std;
 
-unsigned int findAll(string str, string sub) {
+unsigned int findAll(const string& str, const string& sub) {
 	unsigned int count = 0;
-	while (str.find(sub) != string::npos) {
+	int i = str.find(sub);
+	while (i != string :: npos) {
 		count++;
-		str.erase(0, str.find(sub) + sub.size());
+		i = str.find(sub, i + 1);
 	}
 	return count;
 }
 
-void replAll(string& str, string old_str, string new_str) {
+void replAll(string& str, const string& old_str, const string& new_str) {
 	while (str.find(old_str) != string::npos) {
 		str.replace(str.find(old_str), old_str.size(), new_str);
 	}
@@ -22,25 +23,31 @@ void replAll(string& str, string old_str, string new_str) {
 int main(int, char**) {
 	setlocale(LC_ALL, "Russian");
 	string str = "Programming is fun. C++ is powerful. Programming requires practice.";
-	unsigned int counter = 0;
-	unsigned int probels = 0;
-	unsigned int dots = 0;
+	unsigned int symbol_counter = 0;
+	unsigned int word_counter = 0;
+	unsigned int sentence_counter = 0;
+	unsigned int is_counter = 0;
 	for (char c : str) {
 		if (c != ' ') {
-			counter++;
+			symbol_counter++;
 		}
 		else {
-			probels++;
+			word_counter++;
 		}
 		if (c == '.') {
-			dots++;
+			sentence_counter++;
 		}
 	}
 
-	cout << "Всего символов: " << counter << endl;
-	cout << "Всего слов: " << probels + 1 << endl;
-	cout << "Всего предложений: " << dots << endl;
-	cout << "Всего is: " << findAll(str, "is") << endl;
+	cout << "Всего символов: " << symbol_counter << endl;
+	cout << "Всего слов: " << word_counter + 1 << endl;
+	cout << "Всего предложений: " << sentence_counter << endl;
+
+	cout << "Всего is: " << (findAll(str, " is ") + findAll(str, " is.")) << endl;
+
+	for (char el : ".,!?:;") {
+		is_counter += findAll(str, (string(" is") + el));
+	}
 	transform(str.begin(), str.end(), str.begin(), ::toupper);
 	for (int i = 0; i < 20; i++) {
 		cout << str[i];
