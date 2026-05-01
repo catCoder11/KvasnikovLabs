@@ -4,24 +4,52 @@
 #include <cctype>
 using namespace std;
 
-unsigned int findAll(string str, string sub) {
-	unsigned int count = 0;
-	while (str.find(sub) != string::npos) {
-		count++;
-		str.erase(0, str.find(sub) + sub.size());
+bool is_num_good(const string& str) {
+	int size = 0;
+	if (isdigit(str[0])) {
+		size++;
 	}
-	return count;
+	else if (str[0] != '+') {
+		return false;
+	}
+
+	for (int i = 1; i < str.size(); i++) {
+		if (isdigit(str[i])) {
+			size++;
+		}
+		else if (string(" -()").find(str[i]) == string::npos) {
+			return false;
+		}
+	}
+	if (size == 10 || size == 11) {
+		return true;
+	}
+	return false;
 }
 
-void replAll(string& str, string old_str, string new_str) {
-	while (str.find(old_str) != string::npos) {
-		str.replace(str.find(old_str), old_str.size(), new_str);
+string get_only_nums(const string& str) {
+	string new_str = "";
+	for (char el : str) {
+		if (isdigit(el)) {
+			new_str += el;
+		}
+	}
+	return new_str;
+}
+
+string unify_num(const string& num) {
+	if (num.size() == 11) {
+		return string{ '+', num[0], ' ', '(', num[1], num[2], num[3], ')', ' ', num[4], num[5], num[6], '-', num[7], num[8], '-', num[9], num[10] };
+	}
+	else {
+		return "+7 " + string{ '(', num[0], num[1], num[2], ')', ' ', num[3], num[4], num[5], '-', num[6], num[7], '-', num[8], num[9] };
 	}
 }
+
 
 int main(int, char**) {
 	setlocale(LC_ALL, "Russian");
-	vector<string> vec = {"+7 (999) 123-45-67",
+	vector<string> vec = { "+7 (999) 123-45-67",
 	"8-999-123-45-67",
 	"+1 212 456-7890",
 	"999-123-45-67",
@@ -29,35 +57,12 @@ int main(int, char**) {
 	"123456789"
 	};
 	unsigned int good_nums = 0;
-	unsigned int bad_nums = 0;
 	for (string str : vec) {
-		string num = "";
-		auto it = str.begin();
-		if (isdigit(*it)) {
-			num = num + "7" + (*it);
-		}
-		else if ((*it) != '+') {
-			bad_nums++;
-			continue;
-		}
-		it++;
-		for (; it < str.end(); it++) {
-			if (isdigit(*it)) {
-				num += (*it);
-			}
-			else if (!((*it) == '(' || (*it) == ')' || (*it) == '-' || (*it) == ' ')) {
-				bad_nums++;
-				break;
-			}
-		}
-		if (it == str.end() && num.size() == 11) {
-			cout << string{'+', num[0], ' ', '(', num[1], num[2], num[3], ')', ' ', num[4], num[5], num[6], '-', num[7], num[8], '-', num[9], num[10]} << endl;
+		if (is_num_good(str)) {
+			cout << unify_num(get_only_nums(str)) << endl;
 			good_nums++;
-		}
-		else {
-			bad_nums++;
 		}
 	}
 	cout << "Хороших номеров: " << good_nums << endl;
-	cout << "Плохих номеров: " << bad_nums << endl;
+	cout << "Плохих номеров: " << vec.size() - good_nums << endl;
 }
