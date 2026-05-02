@@ -12,26 +12,26 @@ private:
 	int age;
 	float grade;
 public:
-	Student(string name, int age, float grade) {
+	Student(const string& name, int age, float grade) {
 		setName(name);
 		setAge(age);
 		setGrade(grade);
 	}
 
-	void setName(const string& name) { 
+	void setName(const string& name) {
 		if (name == "" || name.find(' ') != string::npos) {
 			throw std::invalid_argument("Некорректное имя студента");
 		}
-		this->name = name; 
+		this->name = name;
 	}
-	void setAge(const int& age) { 
+	void setAge(const int& age) {
 		if (age < 0) {
 			throw std::invalid_argument("Отрицальный возраст");
 		}
-		this->age = age; 
-		
+		this->age = age;
+
 	}
-	void setGrade(const float& grade) { 
+	void setGrade(const float& grade) {
 		if (grade < 0 || grade > 100) {
 			throw std::invalid_argument("Некорректная оценка студента");
 		}
@@ -48,8 +48,7 @@ public:
 
 void addStudent(const string& file_name, const Student& st) {
 	if (file_name.substr(file_name.size() - 4) != ".txt") {
-		cout << "Неверный формат файла" << endl;
-		return;
+		throw std::invalid_argument("Неверный формат файла");
 	}
 	ofstream fout(file_name, ios::app);
 	if (!fout.is_open()) {
@@ -65,12 +64,12 @@ void addStudent(const string& file_name, const Student& st) {
 vector<Student> getStudents(const string& file_name) {
 	vector<Student> vec;
 	if (file_name.substr(file_name.size() - 4) != ".txt") {
-		cout << "Неверный формат файла" << endl;
+		throw std::invalid_argument("Неверный формат файла");
 		return vec;
 	}
 	ifstream fin(file_name);
 	if (!fin.is_open()) {
-		cout << "Нет такого файла" << endl;
+		throw std::invalid_argument("Нет такого файла");
 		fin.close();
 		return vec;
 	}
@@ -84,18 +83,18 @@ vector<Student> getStudents(const string& file_name) {
 	return vec;
 }
 
+void printAll(const char* file_name) {
+	for (const Student& st : getStudents(file_name)) {
+		st.print();
+	}
+}
 
 int main(int, char**) {
 	setlocale(LC_ALL, "Russian");
 	Student st1("МиковКирилл", 19, 44.6), st2("КвасниковДмитрий", 19, 36.9);
-	string file_name = "списокНаОтчисление.txt";
+	const char* file_name = "списокНаОтчисление.txt";
 	addStudent(file_name, st1);
 	addStudent(file_name, st2);
-	
-	for (const Student& st : getStudents(file_name)) {
-		st.print();
-	}
-
-	remove("списокНаОтчисление.txt");
-
+	printAll(file_name);
+	remove(file_name);
 }
