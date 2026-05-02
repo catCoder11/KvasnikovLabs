@@ -18,20 +18,20 @@ public:
 		setGrade(grade);
 	}
 
-	void setName(string name) { 
+	void setName(const string& name) { 
 		if (name == "" || name.find(' ') != string::npos) {
 			throw std::invalid_argument("Некорректное имя студента");
 		}
 		this->name = name; 
 	}
-	void setAge(int age) { 
+	void setAge(const int& age) { 
 		if (age < 0) {
 			throw std::invalid_argument("Отрицальный возраст");
 		}
 		this->age = age; 
 		
 	}
-	void setGrade(float grade) { 
+	void setGrade(const float& grade) { 
 		if (grade < 0 || grade > 100) {
 			throw std::invalid_argument("Некорректная оценка студента");
 		}
