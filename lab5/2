@@ -64,22 +64,18 @@ void addProduct(const Product& p) {
 	if (p.get_id() < 0 || strlen(p.get_name()) == 0) throw std::invalid_argument("Некорректный продукт");
 	ofstream fout(FILE_NAME, ios::binary | ios::app);
 	if (!fout.is_open()) {
-		cout << "Ошибка открытия файла. Sorry(" << endl;
-		return;
+		throw std::invalid_argument("Ошибка открытия файла");
 	}
 	fout.write((char*)&p, sizeof(p));
 	fout.close();
 }
 
 vector<Product> getProducts() {
-	vector<Product> vec;
 	ifstream fin(FILE_NAME, ios::binary);
 	if (!fin.is_open()) {
-		cout << "Студентов не будет. Ошибка. Нет такого файла" << endl;
-		fin.close();
-		return vec;
+		throw std::invalid_argument("Ошибка открытия файла");
 	}
-
+	vector<Product> vec;
 	Product pr;
 	while (fin.read((char*)&pr, sizeof(pr))) {
 		vec.push_back(pr);
@@ -99,7 +95,7 @@ Product findProduct(int id) {
 	for (const Product& p : getProducts()) {
 		if (p.get_id() == id) return p;
 	}
-	return Product(-1, "", 0, 0);
+	return Product();
 }
 
 float sumProducts() {
