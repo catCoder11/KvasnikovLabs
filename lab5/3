@@ -1,0 +1,161 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cctype>
+#include <fstream>
+#include <cstdio>
+#include <cstring>
+#include <sstream>
+using namespace std;
+const char* FILE_NAME = "sales.csv";
+const char* FILTRED_FILE_NAME = "filtered_sales.csv";
+
+struct Sale {
+private:
+	int customer_id;
+	float cost;
+	string sell_date;
+	string type;
+public:
+	Sale() {
+		customer_id = -1;
+		cost = 0;
+		sell_date = "";
+		type = "";
+	}
+	Sale(int id, float cost, string date, string type) {
+		setId(id);
+		setCost(cost);
+		setDate(date);
+		setType(type);
+	}
+
+	void setId(int id) {
+		this->customer_id = id;
+	}
+	void setCost(float cost) {
+		if (cost < 0) throw std::invalid_argument("Цена не может быть отрицательной");
+		this->cost = cost;
+	}
+	void setDate(string date) {
+		if (date == "" || date.find(',') != string::npos) {
+			throw std::invalid_argument("Некорректная дата");
+		}
+		this->sell_date = date;
+	}
+	void setType(string type) {
+		if (type == "" || type.find(',') != string::npos) {
+			throw std::invalid_argument("Некорректный тип");
+		}
+		this->type = type;
+	}
+
+	int getId() const {
+		return customer_id;
+	}
+	float getCost() const {
+		return cost;
+	}
+	string getDate() const {
+		return sell_date;
+	}
+	string getType() const {
+		return type;
+	}
+
+
+};
+
+vector<Sale> getSales(bool filter=false) {
+	vector<Sale> vec;
+	ifstream fin;
+	if (filter) {
+		fin = ifstream(FILTRED_FILE_NAME);
+	}
+	else {
+		fin = ifstream(FILE_NAME);
+	}
+	if (!fin.is_open()) {
+		cout << "Ошибка открытия файла. Sorry(" << endl;
+		fin.close();
+		return vec;
+	}
+	string line;
+	while (getline(fin, line)) {
+		stringstream ss(line);
+		int customer_id;
+		float cost;
+		string sell_date;
+		string type;
+		ss >> customer_id;
+		ss.ignore();
+		ss >> cost;
+		ss.ignore();
+		getline(fin, sell_date, ',');
+		getline(fin, type);
+		vec.push_back(Sale(customer_id, cost, sell_date, type));
+	}
+	return vec;
+}
+
+void addSale(const Sale& sale) {
+	ofstream fout(FILE_NAME, ios::app);
+	if (!fout.is_open()) {
+		cout << "Ошибка открытия файла. Sorry(" << endl;
+		fout.close();
+		return;
+	}
+	fout << sale.getCost() << ',' << sale.getId() << ',' << sale.getDate() << ',' << sale.getType() << endl;
+	fout.close();
+
+}
+double sumSales () {
+	ifstream fin(FILE_NAME);
+	if (!fin.is_open()) {
+		cout << "Ошибка открытия файла. Sorry(" << endl;
+		fout.close();
+		return;
+	}
+	string line;
+	double sum = 0;
+	while (getline(fin, line)) {
+		stringstream ss(line);
+		int customer_id;
+		float cost;
+		ss >> customer_id;
+		ss.ignore();
+		ss >> cost;
+		sum += cost;
+	}
+	return sum;
+}
+
+void filterSales() {
+	ofstream fout(FILTRED_FILE_NAME);
+	if (!fout.is_open()) {
+		cout << "Ошибка открытия файла. Sorry(" << endl;
+		fout.close();
+		return;
+	}
+	vector<Sale> vec = getSales();
+	sort(vec.begin(), vec.end(), [](const Sale& sale1, const Sale& sale2) {return sale1.getDate() < sale2.getDate(); });
+	for (const Sale& sale : vec) {
+		fout << sale.getCost() << ',' << sale.getId() << ',' << sale.getDate() << ',' << sale.getType() << endl;
+	}
+}
+
+int main(int, char**) {
+	setlocale(LC_ALL, "Russian");
+	Sale sale1(10, 1099.99, "20260705", "стол");
+	Sale sale2(15, 499.99, "20260305", "стул");
+	addSale(sale1);
+	addSale(sale2);
+	for (Sale el : getSales()) {
+		cout << el.getId() << endl;
+	}
+	filterSales();
+	for (Sale el : getSales(true)) {
+		cout << el.getId() << endl;
+	}
+	remove(FILE_NAME);
+}
