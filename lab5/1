@@ -7,18 +7,49 @@
 using namespace std;
 
 struct Student {
-	string name="";
-	int age=0;
-	float grade=-1;
+private:
+	string name;
+	int age;
+	float grade;
+public:
+	Student(string name, int age, float grade) {
+		setName(name);
+		setAge(age);
+		setGrade(grade);
+	}
+
+	void setName(string name) { 
+		if (name == "" || name.find(' ') != string::npos) {
+			throw std::invalid_argument("Некорректное имя студента");
+		}
+		this->name = name; 
+	}
+	void setAge(int age) { 
+		if (age < 0) {
+			throw std::invalid_argument("Отрицальный возраст");
+		}
+		this->age = age; 
+		
+	}
+	void setGrade(float grade) { 
+		if (grade < 0 || grade > 100) {
+			throw std::invalid_argument("Некорректная оценка студента");
+		}
+		this->grade = grade;
+	}
+	string getName() const { return name; }
+	int getAge() const { return age; }
+	float getGrade() const { return grade; }
+
+	void print() const {
+		cout << name << ' ' << age << ' ' << grade << endl;
+	}
 };
 
-void addStudent(string& file_name, Student& st) {
+void addStudent(const string& file_name, const Student& st) {
 	if (file_name.substr(file_name.size() - 4) != ".txt") {
 		cout << "Неверный формат файла" << endl;
 		return;
-	}
-	if (st.name.find(' ') != string::npos) {
-		cout << "Некорректное имя студента" << endl;
 	}
 	ofstream fout(file_name, ios::app);
 	if (!fout.is_open()) {
@@ -26,20 +57,12 @@ void addStudent(string& file_name, Student& st) {
 		fout.close();
 		return;
 	}
-	if (st.age <= 0 || st.name.size() == 0 || st.grade < 0) {
-		cout << "Попытка сохранить неверные данные студента" << endl;
-		fout.close();
-		return;
-	}
-	fout << st.name << ' ' << st.age << ' ' << st.grade << endl;
+
+	fout << st.getName() << ' ' << st.getAge() << ' ' << st.getGrade() << endl;
 	fout.close();
 }
-void addStudent(const char* file_name, Student& st) {
-	string s = file_name;
-	addStudent(s, st);
-}
 
-vector<Student> getStudents(string& file_name) {
+vector<Student> getStudents(const string& file_name) {
 	vector<Student> vec;
 	if (file_name.substr(file_name.size() - 4) != ".txt") {
 		cout << "Неверный формат файла" << endl;
@@ -47,46 +70,32 @@ vector<Student> getStudents(string& file_name) {
 	}
 	ifstream fin(file_name);
 	if (!fin.is_open()) {
-		cout << "Студентов не будет. Ошибка. Нет такого файла" << endl;
+		cout << "Нет такого файла" << endl;
 		fin.close();
 		return vec;
 	}
-	Student st;
-	while (fin >> st.name >> st.age >> st.grade) {
-		vec.push_back(st);
+	string name;
+	int age;
+	float grade;
+	while (fin >> name >> age >> grade) {
+		vec.push_back(Student(name, age, grade));
 	}
 	fin.close();
 	return vec;
-}
-vector<Student> getStudents(const char* file_name) {
-	string s = file_name;
-	return getStudents(s);
-}
-
-void printStudents(const vector<Student>& vec) {
-	for (Student st : vec) {
-		cout << st.name << " " << st.age << " " << st.grade << endl;
-	}
 }
 
 
 int main(int, char**) {
 	setlocale(LC_ALL, "Russian");
-	Student st, st2, st3;
+	Student st1("МиковКирилл", 19, 44.6), st2("КвасниковДмитрий", 19, 36.9);
 	string file_name = "списокНаОтчисление.txt";
-	addStudent("money.png", st);
-	addStudent(file_name, st);
-	st2.name = "МиковКирилл";
-	st2.age = 19;
-	st2.grade = 44;
+	addStudent(file_name, st1);
 	addStudent(file_name, st2);
-	st3.name = "КвасниковДмитрий";
-	st3.age = 19;
-	st3.grade = 36;
-	addStudent(file_name, st3);
-	printStudents(getStudents(file_name));
-
-	if (std::remove("списокНаОтчисление.txt") == 0) {
-		// Файл успешно удален
+	
+	for (const Student& st : getStudents(file_name)) {
+		st.print();
 	}
+
+	remove("списокНаОтчисление.txt");
+
 }
