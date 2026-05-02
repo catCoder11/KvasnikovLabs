@@ -17,12 +17,7 @@ private:
 	string sell_date;
 	string type;
 public:
-	Sale() {
-		customer_id = -1;
-		cost = 0;
-		sell_date = "";
-		type = "";
-	}
+	Sale() : customer_id(-1), cost(0), sell_date(""), type("") {}
 	Sale(int id, float cost, string date, string type) {
 		setId(id);
 		setCost(cost);
@@ -31,19 +26,20 @@ public:
 	}
 
 	void setId(int id) {
+		if (id < 0) throw std::invalid_argument("ID не может быть отрицательным");
 		this->customer_id = id;
 	}
 	void setCost(float cost) {
 		if (cost < 0) throw std::invalid_argument("Цена не может быть отрицательной");
 		this->cost = cost;
 	}
-	void setDate(string date) {
+	void setDate(const string& date) {
 		if (date == "" || date.find(',') != string::npos) {
 			throw std::invalid_argument("Некорректная дата");
 		}
 		this->sell_date = date;
 	}
-	void setType(string type) {
+	void setType(const string& type) {
 		if (type == "" || type.find(',') != string::npos) {
 			throw std::invalid_argument("Некорректный тип");
 		}
@@ -62,7 +58,9 @@ public:
 	string getType() const {
 		return type;
 	}
-
+	void print() const {
+		cout << "Товар: " << type << "\tЦена: " << cost << "\tПокупатель: " << customer_id << "\tДата: " << sell_date << endl;
+	}
 
 };
 
@@ -76,9 +74,7 @@ vector<Sale> getSales(bool filter=false) {
 		fin = ifstream(FILE_NAME);
 	}
 	if (!fin.is_open()) {
-		cout << "Ошибка открытия файла. Sorry(" << endl;
-		fin.close();
-		return vec;
+		throw std::invalid_argument("Ошибка открытия файла");
 	}
 	string line;
 	while (getline(fin, line)) {
@@ -91,30 +87,29 @@ vector<Sale> getSales(bool filter=false) {
 		ss.ignore();
 		ss >> cost;
 		ss.ignore();
-		getline(fin, sell_date, ',');
-		getline(fin, type);
+		getline(ss, sell_date, ',');
+		getline(ss, type);
 		vec.push_back(Sale(customer_id, cost, sell_date, type));
 	}
+	fin.close();
 	return vec;
 }
 
 void addSale(const Sale& sale) {
+	if (sale.getId() == -1) throw std::invalid_argument("Некорректный объект Sale");
 	ofstream fout(FILE_NAME, ios::app);
 	if (!fout.is_open()) {
-		cout << "Ошибка открытия файла. Sorry(" << endl;
-		fout.close();
-		return;
+		throw std::invalid_argument("Ошибка открытия файла");
 	}
-	fout << sale.getCost() << ',' << sale.getId() << ',' << sale.getDate() << ',' << sale.getType() << endl;
+	fout << sale.getId() << ',' << sale.getCost() << ',' << sale.getDate() << ',' << sale.getType() << endl;
 	fout.close();
 
 }
+
 double sumSales () {
 	ifstream fin(FILE_NAME);
 	if (!fin.is_open()) {
-		cout << "Ошибка открытия файла. Sorry(" << endl;
-		fout.close();
-		return;
+		throw std::invalid_argument("Ошибка открытия файла");
 	}
 	string line;
 	double sum = 0;
@@ -127,35 +122,42 @@ double sumSales () {
 		ss >> cost;
 		sum += cost;
 	}
+	fin.close();
 	return sum;
 }
 
-void filterSales() {
+void filterSales(string filterDate) {
 	ofstream fout(FILTRED_FILE_NAME);
 	if (!fout.is_open()) {
-		cout << "Ошибка открытия файла. Sorry(" << endl;
-		fout.close();
-		return;
+		throw std::invalid_argument("Ошибка открытия файла");
 	}
 	vector<Sale> vec = getSales();
-	sort(vec.begin(), vec.end(), [](const Sale& sale1, const Sale& sale2) {return sale1.getDate() < sale2.getDate(); });
 	for (const Sale& sale : vec) {
-		fout << sale.getCost() << ',' << sale.getId() << ',' << sale.getDate() << ',' << sale.getType() << endl;
+		if (sale.getDate() == filterDate) 
+			fout << sale.getId() << ',' << sale.getCost() << ',' << sale.getDate() << ',' << sale.getType() << endl;
 	}
+	fout.close();
 }
 
+void printAll() {
+	for (const Sale& el : getSales()) {
+		el.print();
+	}
+}
 int main(int, char**) {
 	setlocale(LC_ALL, "Russian");
 	Sale sale1(10, 1099.99, "20260705", "стол");
 	Sale sale2(15, 499.99, "20260305", "стул");
+	Sale sale3(77, 304.56, "20260705", "ковёр за триста");
 	addSale(sale1);
 	addSale(sale2);
-	for (Sale el : getSales()) {
-		cout << el.getId() << endl;
-	}
-	filterSales();
-	for (Sale el : getSales(true)) {
-		cout << el.getId() << endl;
+	addSale(sale3);
+	printAll();
+	filterSales("20260705");
+	cout << "Продажи за 20260705:" << endl;
+	for (const Sale& el : getSales(true)) {
+		el.print();
 	}
 	remove(FILE_NAME);
 }
+
