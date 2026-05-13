@@ -43,7 +43,7 @@ int main(int, char**) {
 	cout << "Всего слов: " << word_counter + 1 << endl;
 	cout << "Всего предложений: " << sentence_counter << endl;
 
-	for (char el : ".,!?:;") {
+	for (char el : ".,!?:; ") {
 		is_counter += findAll(str, (string(" is") + el));
 	}
 	cout << "Всего is: "<< is_counter << endl;
