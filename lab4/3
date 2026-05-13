@@ -20,7 +20,7 @@ vector<string> split(const string& str, char sep) {
 	return str_vec;
 }
 
-string join(vector<string>::iterator st, vector<string>::iterator end, string sep) {
+string join(vector<string>::iterator st, vector<string>::iterator end, string& sep) {
 	string result = "";
 	for (auto it = st; it != end; it++) {
 		result += *it + sep;
