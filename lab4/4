@@ -43,11 +43,10 @@ int main(int, char**) {
 	cout << "Всего слов: " << word_counter + 1 << endl;
 	cout << "Всего предложений: " << sentence_counter << endl;
 
-	cout << "Всего is: " << (findAll(str, " is ") + findAll(str, " is.")) << endl;
-
 	for (char el : ".,!?:;") {
 		is_counter += findAll(str, (string(" is") + el));
 	}
+	cout << "Всего is: "<< is_counter << endl;
 	transform(str.begin(), str.end(), str.begin(), ::toupper);
 	for (int i = 0; i < 20; i++) {
 		cout << str[i];
