@@ -25,25 +25,25 @@ public:
 		setType(type);
 	}
 
-	void setId(int id) {
-		if (id < 0) throw std::invalid_argument("ID не может быть отрицательным");
-		this->customer_id = id;
+	void setId(int new_id) {
+		if (new_id < 0) throw std::invalid_argument("ID не может быть отрицательным");
+		this->customer_id = new_id;
 	}
-	void setCost(float cost) {
-		if (cost < 0) throw std::invalid_argument("Цена не может быть отрицательной");
-		this->cost = cost;
+	void setCost(float new_cost) {
+		if (new_cost < 0) throw std::invalid_argument("Цена не может быть отрицательной");
+		this->cost = new_cost;
 	}
-	void setDate(const string& date) {
-		if (date == "" || date.find(',') != string::npos) {
+	void setDate(const string& new_date) {
+		if (new_date == "" || new_date.find(',') != string::npos) {
 			throw std::invalid_argument("Некорректная дата");
 		}
-		this->sell_date = date;
+		this->sell_date = new_date;
 	}
-	void setType(const string& type) {
-		if (type == "" || type.find(',') != string::npos) {
+	void setType(const string& new_type) {
+		if (new_type == "" || new_type.find(',') != string::npos) {
 			throw std::invalid_argument("Некорректный тип");
 		}
-		this->type = type;
+		this->type = new_type;
 	}
 
 	int getId() const {
@@ -64,7 +64,7 @@ public:
 
 };
 
-vector<Sale> getSales(bool filter=false) {
+vector<Sale> getSales(bool filter = false) {
 	vector<Sale> vec;
 	ifstream fin;
 	if (filter) {
@@ -106,7 +106,7 @@ void addSale(const Sale& sale) {
 
 }
 
-double sumSales () {
+double sumSales() {
 	ifstream fin(FILE_NAME);
 	if (!fin.is_open()) {
 		throw std::invalid_argument("Ошибка открытия файла");
@@ -133,7 +133,7 @@ void filterSales(string filterDate) {
 	}
 	vector<Sale> vec = getSales();
 	for (const Sale& sale : vec) {
-		if (sale.getDate() == filterDate) 
+		if (sale.getDate() == filterDate)
 			fout << sale.getId() << ',' << sale.getCost() << ',' << sale.getDate() << ',' << sale.getType() << endl;
 	}
 	fout.close();
@@ -160,4 +160,3 @@ int main(int, char**) {
 	}
 	remove(FILE_NAME);
 }
-
