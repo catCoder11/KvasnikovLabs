@@ -63,13 +63,11 @@ vector<Student> getStudents(const string& file_name) {
 	vector<Student> vec;
 	if (file_name.substr(file_name.size() - 4) != ".txt") {
 		throw std::invalid_argument("Неверный формат файла");
-		return vec;
 	}
 	ifstream fin(file_name);
 	if (!fin.is_open()) {
+		throw 42;
 		throw std::invalid_argument("Нет такого файла");
-		fin.close();
-		return vec;
 	}
 	string name;
 	int age;
@@ -91,8 +89,21 @@ int main(int, char**) {
 	setlocale(LC_ALL, "Russian");
 	Student st1("МиковКирилл", 19, 44.6), st2("КвасниковДмитрий", 19, 36.9);
 	const char* file_name = "списокНаОтчисление.txt";
-	addStudent(file_name, st1);
-	addStudent(file_name, st2);
-	printAll(file_name);
+	try
+	{
+		addStudent(file_name, st1);
+		addStudent(file_name, st2);
+		printAll(file_name);
+	}
+	catch (std::exception exc)
+	{
+
+	}
+	catch (...)
+	{
+		std::cout << "Exception";
+	}
+
+	
 	remove(file_name);
 }
