@@ -12,30 +12,30 @@ private:
 	int age;
 	float grade;
 public:
-	Student(const string& name, int age, float grade) {
-		setName(name);
-		setAge(age);
-		setGrade(grade);
+	Student(const string& new_name, int new_age, float new_grade) {
+		setName(new_name);
+		setAge(new_age);
+		setGrade(new_grade);
 	}
 
-	void setName(const string& name) {
-		if (name == "" || name.find(' ') != string::npos) {
+	void setName(const string& new_name) {
+		if (new_name == "" || new_name.find(' ') != string::npos) {
 			throw std::invalid_argument("Некорректное имя студента");
 		}
-		this->name = name;
+		this->name = new_name;
 	}
-	void setAge(const int& age) {
-		if (age < 0) {
+	void setAge(const int& new_age) {
+		if (new_age < 0) {
 			throw std::invalid_argument("Отрицальный возраст");
 		}
-		this->age = age;
+		this->age = new_age;
 
 	}
-	void setGrade(const float& grade) {
-		if (grade < 0 || grade > 100) {
+	void setGrade(const float& new_grade) {
+		if (new_grade < 0 || new_grade > 100) {
 			throw std::invalid_argument("Некорректная оценка студента");
 		}
-		this->grade = grade;
+		this->grade = new_grade;
 	}
 	string getName() const { return name; }
 	int getAge() const { return age; }
@@ -81,7 +81,7 @@ vector<Student> getStudents(const string& file_name) {
 	return vec;
 }
 
-void printAll(const char* file_name) {
+void printAll(const string& file_name) {
 	for (const Student& st : getStudents(file_name)) {
 		st.print();
 	}
