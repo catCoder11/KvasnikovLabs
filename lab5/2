@@ -18,27 +18,27 @@ private:
 
 public:
 	Product() : name(""), id(-1), amount(0), cost(0) {}
-	Product(int id, const char* name, float cost, int amount) {
-		this->set_id(id);
-		this->set_name(name);
-		this->set_cost(cost);
-		this->set_amount(amount);
+	Product(int new_id, const char* new_name, float new_cost, int new_amount) {
+		this->set_id(new_id);
+		this->set_name(new_name);
+		this->set_cost(new_cost);
+		this->set_amount(new_amount);
 	}
 
-	void set_id(const int& id) {
-		this->id = id;
+	void set_id(const int& new_id) {
+		this->id = new_id;
 	}
-	void set_amount(int amount) {
-		if (amount < 0) throw std::invalid_argument("Число товаров не может быть отрицательным");
-		this->amount = amount;
+	void set_amount(int new_amount) {
+		if (new_amount < 0) throw std::invalid_argument("Число товаров не может быть отрицательным");
+		this->amount = new_amount;
 	}
-	void set_cost(float cost) {
-		if (cost < 0) throw std::invalid_argument("Цена не может быть отрицательным");
-		this->cost = cost;
+	void set_cost(float new_cost) {
+		if (new_cost < 0) throw std::invalid_argument("Цена не может быть отрицательным");
+		this->cost = new_cost;
 	}
-	void set_name(const char* name) {
-		if (strlen(name) > NAME_SIZE) throw std::invalid_argument("Слишком длинное название");
-		strcpy_s(this->name, name);
+	void set_name(const char* new_name) {
+		if (strlen(new_name) > NAME_SIZE) throw std::invalid_argument("Слишком длинное название");
+		strcpy_s(this->name, new_name);
 	}
 
 	int get_id() const {
